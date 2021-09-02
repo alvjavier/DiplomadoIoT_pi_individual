@@ -69,8 +69,7 @@ int main(void) {
 
     PRINTF("Hello World\n");
 
-
-
+    unsigned char cont_LR = 0;
 
     /* Enter an infinite loop, just incrementing a counter. */
     while(1) {
@@ -80,6 +79,15 @@ int main(void) {
         delay_block();
         apagar_led_verde();
         delay_block();
+        if (i % 10 == 0){
+                	cont_LR++;
+                	if (cont_LR % 2 == 0){
+                		 apagar_led_rojo();
+                	}else{
+                		encender_led_rojo();
+
+                	}
+                }
 
     }
     return 0 ;
