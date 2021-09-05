@@ -41,6 +41,7 @@
 #include "fsl_debug_console.h"
 
 #include "leds.h"
+#include "sensor_de_luz.h"
 /* TODO: insert other include files here. */
 
 /* TODO: insert other definitions and declarations here. */
@@ -57,6 +58,7 @@ void delay_block(void){
 }
 int main(void) {
 	int i=0;
+	uint32_t adc_sensor_de_luz;
 
     /* Init board hardware. */
     BOARD_InitBootPins();
@@ -88,6 +90,10 @@ int main(void) {
 
                 	}
                 }
+
+        adc_sensor_de_luz=SensorDeLuzObtenerdatoADC();
+
+        printf("adc sensor de luz:%u\r\n",adc_sensor_de_luz);
 
     }
     return 0 ;
