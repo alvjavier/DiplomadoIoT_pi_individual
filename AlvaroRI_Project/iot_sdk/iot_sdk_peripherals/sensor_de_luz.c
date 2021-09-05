@@ -1,7 +1,7 @@
-/*! @file : leds.c
+/*! @file : sensor_de_luz.c
  * @author  Ernesto Andres Rincon Cruz
  * @version 1.0.0
- * @date    1/09/2021
+ * @date    4/09/2021
  * @brief   Driver para 
  * @details
  *
@@ -9,8 +9,7 @@
 /*******************************************************************************
  * Includes
  ******************************************************************************/
-#include "leds.h"
-#include "fsl_gpio.h"
+#include "sensor_de_luz.h"
 
 /*******************************************************************************
  * Definitions
@@ -20,7 +19,17 @@
 /*******************************************************************************
  * Private Prototypes
  ******************************************************************************/
+ void SensorDeLuzadcIniciarCaptura(void);
+/*!
+ * @brief esperar a que finalice el trabajo del ADC
+ *
+ */
 
+ void SensorDeLuzEsperarResultado(void);
+ /*!
+  * @brief retorna el resultado de la conversion ADC para sensor de luz
+  *
+  */
 
 /*******************************************************************************
  * External vars
@@ -35,26 +44,33 @@
 /*******************************************************************************
  * Private Source Code
  ******************************************************************************/
+ void SensorDeLuzadcIniciarCaptura(void){
+	 ADC16_SetChannelConfig(SENSOR_DE_LUZ_ADC16_BASE, SENSOR_DE_LUZ_ADC16_CHANNEL_GROUP, &ADC0_channelsConfig[0]);
+ 
+ }
+	void SensorDeLuzEsperarResultado(void){
+      while (0U == (kADC16_ChannelConversionDoneFlag
+    		        & ADC16_GetChannelStatusFlags(SENSOR_DE_LUZ_ADC16_BASE, SENSOR_DE_LUZ_ADC16_CHANNEL_GROUP)) )
+      {
+
+      }
+
+	}
 
 
 /*******************************************************************************
  * Public Source Code
  ******************************************************************************/
- void encender_led_verde(){
-   GPIO_PinWrite(GPIOD,5,0);
- }
-void apagar_led_verde(){
-	GPIO_PinWrite(GPIOD,5,1);
-}
-void encender_led_rojo(){
-	 //encender led rojo
-	 GPIO_PinWrite(GPIOE,31,0);
-}
 
-	 void apagar_led_rojo(){
-	 	 //apagar led rojo
-	 	 GPIO_PinWrite(GPIOE,31,1);
-	  }
+	uint32_t SensorDeLuzObtenerdatoADC(void){
+		uint32_t resultadoADC;
+
+		SensorDeLuzadcIniciarCaptura();
+		SensorDeLuzEsperarResultado();
+
+		resultadoADC=ADC16_GetChannelConversionValue(SENSOR_DE_LUZ_ADC16_BASE, SENSOR_DE_LUZ_ADC16_CHANNEL_GROUP);
 
 
+		return(resultadoADC);
+	}
 

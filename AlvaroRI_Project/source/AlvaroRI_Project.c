@@ -41,6 +41,7 @@
 #include "fsl_debug_console.h"
 
 #include "leds.h"
+#include "sensor_de_luz.h"
 /* TODO: insert other include files here. */
 
 /* TODO: insert other definitions and declarations here. */
@@ -57,6 +58,7 @@ void delay_block(void){
 }
 int main(void) {
 	int i=0;
+	uint32_t adc_sensor_de_luz;
 
     /* Init board hardware. */
     BOARD_InitBootPins();
@@ -69,8 +71,7 @@ int main(void) {
 
     PRINTF("Hello World\n");
 
-
-
+    unsigned char cont_LR = 0;
 
     /* Enter an infinite loop, just incrementing a counter. */
     while(1) {
@@ -80,6 +81,19 @@ int main(void) {
         delay_block();
         apagar_led_verde();
         delay_block();
+        if (i % 10 == 0){
+                	cont_LR++;
+                	if (cont_LR % 2 == 0){
+                		 apagar_led_rojo();
+                	}else{
+                		encender_led_rojo();
+
+                	}
+                }
+
+        adc_sensor_de_luz=SensorDeLuzObtenerdatoADC();
+
+        printf("adc sensor de luz:%u\r\n",adc_sensor_de_luz);
 
     }
     return 0 ;
